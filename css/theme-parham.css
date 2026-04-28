@@ -6,25 +6,139 @@
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Source+Code+Pro:wght@400;700&display=swap");
 
 :root {
-  --np-bg: #f1efee;
-  --np-text: #1c1c1c;
-  --np-heading: #493b31;
-  --np-muted: #6b5d54;
-  --np-border-top: #cec3ba;
-  --np-link-underline: rgba(73, 59, 49, 0.45);
-  --np-hover: #352a23;
+  --np-bg: #faf7f3;
+  --np-bg-deep: #f3ede4;
+  --np-text: #182325;
+  --np-heading: #5a3d2e;
+  --np-muted: #6d5f56;
+  --np-accent: #157a87;
+  --np-accent-deep: #0f5f6a;
+  --np-accent-soft: rgba(21, 122, 135, 0.5);
+  --np-link-underline: rgba(21, 122, 135, 0.36);
+  /* Must match bundled .px3 gutter (2rem desktop, 1rem narrow) */
+  --np-gutter: 2rem;
+}
+
+@media (max-width: 480px) {
+  :root {
+    --np-gutter: 1rem;
+  }
 }
 
 html {
-  border-top-color: var(--np-border-top) !important;
+  border-top-color: var(--np-accent) !important;
+  border-top-width: 4px !important;
+}
+
+::selection {
+  background-color: rgba(21, 122, 135, 0.28) !important;
+}
+
+/* Homepage only: wider measure so bios and publication lines wrap later */
+body.page-home.max-width {
+  max-width: 58rem !important;
+}
+
+/*
+  Selected publications live outside .content-wrapper (sibling below photo+bio),
+  so text is never constrained by the float or shape-outside beside the image.
+*/
+.content.index .homepage-publications {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+.homepage-publications h1 {
+  margin-top: 0 !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.homepage-publications > p {
+  margin-top: 0 !important;
+  margin-bottom: 0.35rem !important;
+}
+
+.homepage-publications ul {
+  list-style: none !important;
+  padding-inline-start: 0 !important;
+  margin-top: 0.25rem !important;
+  margin-bottom: 0 !important;
+}
+
+.homepage-publications ul li {
+  position: relative !important;
+  padding-left: 1.15rem !important;
+  margin-bottom: 0.45rem !important;
+}
+
+.homepage-publications ul li::before {
+  content: "\203a" !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 0.12em !important;
+  color: var(--np-accent) !important;
+  font-weight: 400 !important;
+}
+
+.homepage-publications ul li:last-child {
+  margin-bottom: 0 !important;
+}
+
+.homepage-publications li p {
+  margin: 0 !important;
+  line-height: 1.45 !important;
 }
 
 body {
+  position: relative !important;
   background-color: var(--np-bg) !important;
+  background-image: linear-gradient(
+    175deg,
+    #fefbf7 0%,
+    var(--np-bg) 42%,
+    var(--np-bg-deep) 100%
+  ) !important;
+  background-attachment: fixed !important;
   color: var(--np-text) !important;
   font-family: Roboto, system-ui, -apple-system, sans-serif !important;
   font-size: 16px !important;
   line-height: 1.65 !important;
+}
+
+/*
+  Section bands like Google Sites / natalieparham.com: each block gets its own fill,
+  aligned to real content — not repeating gradients on body.
+*/
+.np-band {
+  margin-left: calc(-1 * var(--np-gutter)) !important;
+  margin-right: calc(-1 * var(--np-gutter)) !important;
+  padding-left: var(--np-gutter) !important;
+  padding-right: var(--np-gutter) !important;
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+
+.np-band--mist {
+  background-color: rgba(247, 245, 242, 0.72) !important;
+}
+
+.np-band--paper {
+  background-color: rgba(252, 250, 246, 0.65) !important;
+}
+
+.np-band--taupe {
+  background-color: rgba(228, 221, 212, 0.38) !important;
+}
+
+.np-band--flush-top {
+  padding-top: 0.35rem !important;
+}
+
+.np-band--flush-bottom {
+  padding-bottom: 0.35rem !important;
 }
 
 h1,
@@ -53,24 +167,35 @@ h3 {
   font-size: 1.05rem !important;
 }
 
-#header #title-link h1 {
-  font-family: "Playfair Display", Georgia, serif !important;
-  color: var(--np-heading) !important;
-  font-weight: 600 !important;
+#header #title-link {
+  background-image: none !important;
+  text-decoration: none !important;
 }
 
+#header #title-link:hover {
+  background-image: none !important;
+  color: var(--np-accent-deep) !important;
+}
+
+#header #title-link h1 {
+  font-family: "Playfair Display", Georgia, serif !important;
+  color: inherit !important;
+  font-weight: 600 !important;
+  font-size: clamp(1.85rem, 1.35rem + 1.35vw, 2.45rem) !important;
+  line-height: 1.12 !important;
+  letter-spacing: 0.01em !important;
+}
+
+/* Nav: strip the thick .content gradient underlines; hover stays minimal */
 #header #nav ul a {
   color: var(--np-heading) !important;
+  background-image: none !important;
+  transition: color 0.15s ease !important;
 }
 
 #header #nav ul a:hover {
-  color: var(--np-hover) !important;
-  background-image: linear-gradient(
-    transparent,
-    transparent 5px,
-    var(--np-heading) 5px,
-    var(--np-heading)
-  ) !important;
+  color: var(--np-accent-deep) !important;
+  background-image: none !important;
 }
 
 .content a {
@@ -84,12 +209,12 @@ h3 {
 }
 
 .content a:hover {
-  color: var(--np-hover) !important;
+  color: var(--np-accent-deep) !important;
   background-image: linear-gradient(
     transparent,
     transparent 4px,
-    var(--np-hover) 4px,
-    var(--np-hover)
+    var(--np-accent-soft) 4px,
+    var(--np-accent-soft)
   ) !important;
 }
 
@@ -103,13 +228,16 @@ h3 {
   background-image: linear-gradient(
     transparent,
     transparent 6px,
-    var(--np-hover) 6px,
-    var(--np-hover)
+    var(--np-accent-soft) 6px,
+    var(--np-accent-soft)
   ) !important;
 }
 
 article .content h2:before {
-  color: var(--np-heading) !important;
+  content: "\203a" !important;
+  color: var(--np-accent) !important;
+  font-weight: 400 !important;
+  padding-right: 0.35em !important;
 }
 
 th {
@@ -139,13 +267,13 @@ code {
 }
 
 #footer li {
-  border-color: var(--np-link-underline) !important;
+  border-color: rgba(21, 122, 135, 0.28) !important;
 }
 
 #footer a {
-  color: var(--np-muted) !important;
+  color: #526b70 !important;
 }
 
 #footer a:hover {
-  color: var(--np-heading) !important;
+  color: var(--np-accent-deep) !important;
 }
