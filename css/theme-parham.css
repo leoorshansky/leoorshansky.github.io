@@ -25,17 +25,21 @@
   }
 }
 
+/*
+  Bundled base CSS sets html { border-top: 2px solid #383838 } — reads as a black bar,
+  especially with overscroll. Paper-colored html background keeps rubber-band tint calm.
+*/
 html {
-  border-top-color: var(--np-accent) !important;
-  border-top-width: 4px !important;
+  border-top: none !important;
+  background-color: var(--np-bg) !important;
 }
 
 ::selection {
   background-color: rgba(21, 122, 135, 0.28) !important;
 }
 
-/* Homepage only: wider measure so bios and publication lines wrap later */
-body.page-home.max-width {
+/* Match bundled .max-width (48rem) — use one measure site-wide */
+body.max-width {
   max-width: 58rem !important;
 }
 
@@ -112,6 +116,35 @@ body {
   Section bands like Google Sites / natalieparham.com: each block gets its own fill,
   aligned to real content — not repeating gradients on body.
 */
+/*
+  Bands often lived inside main / article > .content while #footer was a sibling of
+  those wrappers — different containing blocks meant stripe widths didn’t match.
+  Flatten wrappers so sections and footer share the outer .content.index column.
+*/
+main {
+  display: contents !important;
+}
+
+article.post {
+  display: contents !important;
+}
+
+article.post > .content {
+  display: contents !important;
+}
+
+/*
+  Outer column + stripes as flex items (after display:contents flattening): stretch to
+  the body column and avoid width:100% on bands — it stacks with negative margins and
+  overflows horizontally.
+*/
+.content.index {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
 .np-band {
   margin-left: calc(-1 * var(--np-gutter)) !important;
   margin-right: calc(-1 * var(--np-gutter)) !important;
@@ -119,6 +152,9 @@ body {
   padding-right: var(--np-gutter) !important;
   padding-top: 1rem !important;
   padding-bottom: 1rem !important;
+  box-sizing: border-box !important;
+  align-self: stretch !important;
+  min-width: 0 !important;
 }
 
 .np-band--mist {
@@ -130,15 +166,29 @@ body {
 }
 
 .np-band--taupe {
-  background-color: rgba(228, 221, 212, 0.38) !important;
+  background-color: rgba(240, 236, 231, 0.3) !important;
 }
 
 .np-band--flush-top {
   padding-top: 0.35rem !important;
 }
 
+/* Top nav band: soften the rectangle (only the header uses mist + flush-top) */
+.np-band--mist.np-band--flush-top {
+  border-radius: 0.5rem !important;
+}
+
 .np-band--flush-bottom {
   padding-bottom: 0.35rem !important;
+}
+
+.content .photo-collage {
+  margin: 0 !important;
+}
+
+.content .photo-collage img {
+  border-radius: 5px !important;
+  box-shadow: 0 6px 28px rgba(24, 35, 37, 0.1) !important;
 }
 
 h1,
@@ -260,6 +310,21 @@ pre {
 
 code {
   border-color: var(--np-link-underline) !important;
+}
+
+/*
+  Bundled styles set #footer { position: absolute; width: 100%; bottom: 0 }, which
+  breaks .np-band negative margins — the footer stripe no longer matches other bands.
+*/
+#footer.np-band {
+  position: relative !important;
+  inset: auto !important;
+  width: auto !important;
+  max-width: none !important;
+  flex-shrink: 0 !important;
+  align-self: stretch !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 #footer {
