@@ -99,13 +99,7 @@ body.max-width {
 body {
   position: relative !important;
   background-color: var(--np-bg) !important;
-  background-image: linear-gradient(
-    175deg,
-    #fefbf7 0%,
-    var(--np-bg) 42%,
-    var(--np-bg-deep) 100%
-  ) !important;
-  background-attachment: fixed !important;
+  background-image: none !important;
   color: var(--np-text) !important;
   font-family: Roboto, system-ui, -apple-system, sans-serif !important;
   font-size: 16px !important;
@@ -143,6 +137,23 @@ article.post > .content {
   width: 100% !important;
   max-width: 100% !important;
   min-width: 0 !important;
+  /*
+    Bundled .content sets min-height: 100%. That keeps the flex column as tall as the
+    viewport on short pages, leaving empty space below the footer inside this div —
+    reads like an oversized shaded/footer band. Size to content instead.
+  */
+  min-height: unset !important;
+}
+
+/*
+  Override bundled .py4 vertical padding explicitly so margins stay consistent with theme.
+*/
+.content.index.py4 {
+  justify-content: flex-start !important;
+  align-content: flex-start !important;
+  /* Keep breathing room above and below menus, but with a flat background. */
+  padding-top: 4rem !important;
+  padding-bottom: 4rem !important;
 }
 
 .np-band {
@@ -154,6 +165,8 @@ article.post > .content {
   padding-bottom: 1rem !important;
   box-sizing: border-box !important;
   align-self: stretch !important;
+  flex-grow: 0 !important;
+  flex-shrink: 0 !important;
   min-width: 0 !important;
 }
 
@@ -315,16 +328,23 @@ code {
 /*
   Bundled styles set #footer { position: absolute; width: 100%; bottom: 0 }, which
   breaks .np-band negative margins — the footer stripe no longer matches other bands.
+  Keep the bar only as tall as the menu: no flex growth, tight padding, align-content
+  reset so bundled align-content:center doesn’t vertically pad empty flex lines.
 */
 #footer.np-band {
   position: relative !important;
   inset: auto !important;
   width: auto !important;
   max-width: none !important;
-  flex-shrink: 0 !important;
+  flex: 0 0 auto !important;
   align-self: stretch !important;
   margin-top: 0 !important;
   margin-bottom: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding-top: 0.45rem !important;
+  padding-bottom: 0.45rem !important;
+  align-content: flex-start !important;
 }
 
 #footer {
